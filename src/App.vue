@@ -1,7 +1,9 @@
 <script setup>
+import { ref } from 'vue';
 import Form from './components/Form.vue';
 import Header from './components/Header.vue';
-Form
+
+const pacients = ref([]);
 </script>
 
 <template>
@@ -10,6 +12,12 @@ Form
 
     <div class="mt-12 md:flex">
       <Form/>
+
+      <div class="md:w-1/2 md:h-screen overflow-y-scroll">
+        <h3 class="font-black text-3xl text-center">Administra tus Pacientes</h3>
+        <div v-if="pacients.length > 0"></div>
+        <p v-else class="mt-10 text-2xl text-center">No Hay Pacientes</p>
+      </div>
     </div>
   </div>
 </template>
