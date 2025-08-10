@@ -7,22 +7,35 @@ const alert = reactive({
     message: ''
 });
 
-const paciente = reactive({
-    nombre: '',
-    correo: '',
-    fecha: '',
-    sintomas: ''
+const emit = defineEmits(['update:nombre', 'update:correo', 'update:fecha', 'update:sintomas', 'save-pacient']);
+
+const props = defineProps({
+    nombre: {
+        type: String,
+        required: true
+    },
+    correo: {
+        type: String,
+        required: true
+    },
+    fecha: {
+        type: String,
+        required: true
+    },
+    sintomas: {
+        type: String,
+        required: true
+    }
 });
 
 const validate = () => {
-    if (Object.values(paciente).includes('')) {
+    if (Object.values(props).includes('')) {
         alert.message = 'Todos los campos son obligatorios';
         alert.type = 'error';
-        return;
     } else {
         alert.message = 'Guardado correctamente';
         alert.type = 'done';
-        return;
+        emit('save-pacient')
     }
 };
 
@@ -45,31 +58,31 @@ const validate = () => {
                     Nombre paciente
                 </label>
                 <input type="text" id="paciente" placeholder="Nombre del paciente"
-                    class="border-2 w-full p-2 mt-2 placeholder-indigo-400 rounded-md"
-                    v-model="paciente.nombre">
+                    class="border-2 w-full p-2 mt-2 placeholder-indigo-400 rounded-md" @input="$emit('update:nombre', $event.target.value)"
+                    :value="nombre">
             </div>
             <div class="mb-5">
                 <label for="email" class="block text-gray-700 uppercase font-bold">
                     Correo electrónico
                 </label>
                 <input type="email" id="email" placeholder="Corrreo electrónico del paciente"
-                    class="border-2 w-full p-2 mt-2 placeholder-indigo-400 rounded-md"
-                    v-model="paciente.correo">
+                    class="border-2 w-full p-2 mt-2 placeholder-indigo-400 rounded-md" @input="$emit('update:correo', $event.target.value)"
+                    :value="correo">
             </div>
             <div class="mb-5">
                 <label for="fecha" class="block text-gray-700 uppercase font-bold">
                     Fecha de consulta
                 </label>
-                <input type="date" id="fecha" class="border-2 w-full p-2 mt-2 placeholder-indigo-400 rounded-md"
-                v-model="paciente.fecha">
+                <input type="date" id="fecha" class="border-2 w-full p-2 mt-2 placeholder-indigo-400 rounded-md" @input="$emit('update:fecha', $event.target.value)"
+                :value="fecha">
             </div>
             <div class="mb-5">
                 <label for="consulta" class="block text-gray-700 uppercase font-bold">
                     Síntomas
                 </label>
                 <textarea type="text" id="consulta" placeholder="Detalla los sintomas que presenta"
-                    class="border-2 w-full p-2 mt-2 placeholder-indigo-400 rounded-md h-30" 
-                    v-model="paciente.sintomas"/>
+                    class="border-2 w-full p-2 mt-2 placeholder-indigo-400 rounded-md h-30" @input="$emit('update:sintomas', $event.target.value)"
+                    :value="sintomas"/>
             </div>
             <input type="submit"
                 class="bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-colors"

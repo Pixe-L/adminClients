@@ -1,9 +1,20 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
 import Form from './components/Form.vue';
 import Header from './components/Header.vue';
 
 const pacients = ref([]);
+
+const paciente = reactive({
+    nombre: '',
+    correo: '',
+    fecha: '',
+    sintomas: ''
+});
+
+const savePacient = () => {
+  pacients.value.push(paciente);
+};
 </script>
 
 <template>
@@ -11,7 +22,9 @@ const pacients = ref([]);
     <Header />
 
     <div class="mt-12 md:flex">
-      <Form/>
+      <Form
+      v-model:nombre="paciente.nombre" v-model:correo="paciente.correo" v-model:fecha="paciente.fecha" v-model:sintomas="paciente.sintomas" 
+      @save-pacient="savePacient"/>
 
       <div class="md:w-1/2 md:h-screen overflow-y-scroll">
         <h3 class="font-black text-3xl text-center">Administra tus Pacientes</h3>
