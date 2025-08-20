@@ -16,7 +16,14 @@ const paciente = reactive({
 
 const savePacient = () => {
   pacients.value.push({...paciente});
-  paciente.nombre = '';
+  if (pacients.value.length > 0) {
+    Object.assign(paciente, {
+      nombre: '',
+      correo: '',
+      fecha: '',
+      sintomas: ''
+    })
+  }
 };
 </script>
 
@@ -35,7 +42,7 @@ const savePacient = () => {
             Información de
             <span class="text-indigo-600 font-bold">Pacientes</span>
           </p>
-          <Patient v-for="(patient, i) in pacients" :key="i" :patient="paciente" />
+          <Patient v-for="(patient, i) in pacients" :key="i" :patient="patient" />
         </div>
         <p v-else class="mt-10 text-2xl text-center">No Hay Pacientes</p>
       </div>
