@@ -1,5 +1,5 @@
 <script setup>
-import { reactive } from 'vue';
+import { reactive, computed } from 'vue';
 import Alert from './Alert.vue';
 
 const alert = reactive({
@@ -25,6 +25,10 @@ const props = defineProps({
     sintomas: {
         type: String,
         required: true
+    },
+    id: {
+        type: [String, null],
+        required: true
     }
 });
 
@@ -32,12 +36,23 @@ const validate = () => {
     if (Object.values(props).includes('')) {
         alert.message = 'Todos los campos son obligatorios';
         alert.type = 'error';
-    } else {
+        return
+    }
         alert.message = 'Guardado correctamente';
         alert.type = 'done';
         emit('save-pacient')
-    }
+    
+    setTimeout(() => {
+        Object.assign(alert, {
+            type: '',
+            message: ''
+        })
+    }, 3000)
 };
+
+const update = computed(() => {
+    return props.id
+});
 
 </script>
 
@@ -86,7 +101,7 @@ const validate = () => {
             </div>
             <input type="submit"
                 class="bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-colors"
-                value="Registrar paciente" />
+                :value="[update ? 'Guardar paciente' : 'Registrar paciente']" />
         </form>
     </div>
 </template>
